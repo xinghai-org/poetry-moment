@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template_string, request
+from flask import Blueprint, render_template_string, request, jsonify
 from . import core
 import xhlog as log
 
@@ -22,3 +22,9 @@ def text():
     log.info(f"请求IP: {request.remote_addr} 请求内容: 文本")
     result = core.get()
     return result.get('content', 0), 200
+
+@main.route('/json/', methods=['GET'])
+def json_endpoint():
+    log.info(f"请求IP: {request.remote_addr} 请求内容: JSON")
+    response_data = core.get()
+    return jsonify(response_data), 200
