@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template_string
+from flask import Blueprint, render_template_string, request
+from . import core
+import xhlog as log
 
 # 定义蓝图
 poetry_moment_blueprint = Blueprint('poetry_moment', __name__, url_prefix='/poetry-moment')
@@ -14,3 +16,9 @@ main = poetry_moment_blueprint
 @main.route('/')
 def index():
     return "欢迎使用诗歌时刻！"
+
+@main.route('/text/')
+def text():
+    log.info(f"请求IP: {request.remote_addr} 请求内容: 文本")
+    result = core.get()
+    return result.get('content', 0), 200
