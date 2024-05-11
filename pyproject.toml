@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "poetry-moment"
-version = "0.0.4"
+version = "0.0.5"
 description = "[诗歌时刻]让诗意，流露此刻。"
 authors = ["Yeying-Xingchen <yeyingxingchen@yeah.net>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.12"
+python = ">=3.6"
 apicat = ">=0.0.2"
+xhlog = ">=0.0.1"
 
 [build-system]
 requires = ["poetry-core"]
