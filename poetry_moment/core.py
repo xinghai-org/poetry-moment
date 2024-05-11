@@ -6,7 +6,7 @@ import random
 import time
 
 plugin_name = 'poetry_moment'
-directory = config.get_plugin_cfg(plugin_name)
+directory = config.get_plugin_cfg(plugin_name,"directory")
 
 def get():
     # 获取该目录下所有文件的列表
