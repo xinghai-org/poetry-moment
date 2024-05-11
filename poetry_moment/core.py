@@ -1,13 +1,14 @@
 # 导入所需模块
-from . import config
+from apicat import config
 import os
 import json
 import random
 import time
 
-def get(path):
-    # 使用config模块获取诗歌数据所在的目录
-    directory = config.get_path(path)
+plugin_name = 'poetry_moment'
+directory = config.get_plugin_cfg(plugin_name)
+
+def get():
     # 获取该目录下所有文件的列表
     json_files = [file for file in os.listdir(directory) if file.endswith('.json')]
     # 随机选择一个语录文件
@@ -31,7 +32,7 @@ def get(path):
     return final_data
 
 
-def post(path, category, content, user):
+def post(content, category, user):
     # 创建待写入的新语录记录字典
     new_entry = {
         "content": content,
@@ -40,10 +41,10 @@ def post(path, category, content, user):
         "date": time.strftime("%Y-%m-%d", time.localtime())
     }
     # 获取用于存储语录的目标目录
-    discourse_directory = config.get_config_path(path)
+    directory = config.get_plugin_cfg(plugin_name)
     new_filename = f"{category}.json"
     # 写入新语录
-    with open(os.path.join(discourse_directory, new_filename), 'w', encoding='utf-8') as file:
+    with open(os.path.join(directory, new_filename), 'w+', encoding='utf-8') as file:
         json.dump(new_entry, file, ensure_ascii=False, indent=4)
     # 返回新创建语录的详细信息
     poetry_data = {
