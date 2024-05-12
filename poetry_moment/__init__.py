@@ -15,17 +15,15 @@ def index():
 
 @main.route('/get/<poetry_type>')
 def get_poetry(poetry_type):
+    content = core.get()
     if poetry_type=='text':
         log.info(f"请求IP: {request.remote_addr} 请求内容: 文本")
-        result = core.get()
-        return result.get('content', 0), 200
+        return content.get('content', 0), content.get('status', 0)
     if poetry_type=='json':
         log.info(f"请求IP: {request.remote_addr} 请求内容: JSON")
-        response_data = core.get()
-        return jsonify(response_data), 200
+        return jsonify(content), content.get('status', 0)
     if poetry_type=='card':
         log.info(f"请求IP: {request.remote_addr} 请求内容: 诗词卡片")
-        content = core.get()
         card = f"""
 <body>
 {content.get('content', 0)}
@@ -40,8 +38,9 @@ body {
 }
 </style>
 """
-        return render_template_string(card), 200
-    return "请求类型错误", 404
+        return render_template_string(card), content.get('status', 0)
+    else:
+        return "请求类型错误", 404
 
 @main.route('/post')
 def post_poetry():
@@ -54,4 +53,5 @@ def post_poetry():
         return "无内容！", 404
     elif token != config.get_plugin_cfg('poetry-moment', 'token', default="123456"):
         return "token错误！", 404
-    return jsonify(core.post(content, category, user)), 200
+    content = core.post(content, category, user)
+    return jsonify(content), content.get('status', 0)

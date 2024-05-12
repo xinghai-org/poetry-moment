@@ -20,7 +20,7 @@ def get():
         selected_data = random.choice(data)
         # 构建返回结果字典，包含状态、消息、类别、内容、来源、收录者和日期信息
         final_data = {
-            'status': '200',
+            'status': 200,
             'msg': '成功',
             'category': os.path.splitext(discourse_file)[0],
             'content': selected_data.get('content'),
@@ -59,7 +59,7 @@ def post(content, category, user):
         json.dump(data, file, ensure_ascii=False, indent=4)
     # 返回新创建语录的详细信息
     poetry_data = {
-        'status': '200',
+        'status': 200,
         'msg': '创建成功！',
         'category': category,
         'content': content,
