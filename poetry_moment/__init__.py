@@ -2,6 +2,7 @@ from flask import Blueprint, render_template_string, request, jsonify
 from . import core
 import xhlog as log
 from .docs import docs
+from apicat import config
 
 # 定义蓝图
 blueprint = Blueprint('poetry_moment', __name__, url_prefix='/poetry-moment')
@@ -46,8 +47,11 @@ body {
 def post_poetry():
     log.info(f"请求IP: {request.remote_addr} 请求内容: 提交")
     content = request.args.get('content', None)
+    token = request.args.get('token', "123456")
     category = request.args.get('category', 'default')
     user = request.args.get('user', '雷锋')
     if content is None:
         return "无内容！", 404
+    elif token != config.get_plugin_cfg('poetry-moment', 'token', default="123456"):
+        return "token错误！", 404
     return jsonify(core.post(content, category, user)), 200

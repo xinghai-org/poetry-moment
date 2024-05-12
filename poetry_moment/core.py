@@ -33,17 +33,30 @@ def get():
 
 
 def post(content, category, user):
-    # 创建待写入的新语录记录字典
+    # 新增语录记录字典
     new_entry = {
         "content": content,
         "from": "user",
         "creator": user,
         "date": time.strftime("%Y-%m-%d", time.localtime())
     }
-    new_filename = f"{category}.json"
-    # 写入新语录
-    with open(os.path.join(directory, new_filename), 'w+', encoding='utf-8') as file:
-        json.dump(new_entry, file, ensure_ascii=False, indent=4)
+    # 拼接文件路径
+    filepath = os.path.join(directory, f"{category}.json")
+    # 检查文件是否存在
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Category {category} does not exist.")
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+    except json.JSONDecodeError:
+        raise ValueError("Failed to load existing data. Invalid JSON format.")
+    if not isinstance(data, list):
+        data = [data]
+    # 将新语录添加到数据列表
+    data.append(new_entry)
+    # 保存更新后的数据到文件
+    with open(filepath, 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False, indent=4)
     # 返回新创建语录的详细信息
     poetry_data = {
         'status': '200',
