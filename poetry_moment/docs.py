@@ -1,3 +1,4 @@
+from apicat import config
 def docs():
     html = """
 <h2>诗歌时刻<h2>
@@ -6,8 +7,8 @@ def docs():
 <h3>使用<h3>
 <h4>以返回数据解析（GET请求）<h4>
 <p>
-    纯文本返回：api地址/poetry-moment/get/text<br>
-    JSON返回：api地址/poetry-moment/get/json
+    纯文本返回："""+config.get_website_url()+"""/poetry-moment/get/text<br>
+    JSON返回："""+config.get_website_url()+"""/poetry-moment/get/json
 </p>
     """
     return html
