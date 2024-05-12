@@ -40,8 +40,6 @@ def post(content, category, user):
         "creator": user,
         "date": time.strftime("%Y-%m-%d", time.localtime())
     }
-    # 获取用于存储语录的目标目录
-    directory = config.get_plugin_cfg(plugin_name)
     new_filename = f"{category}.json"
     # 写入新语录
     with open(os.path.join(directory, new_filename), 'w+', encoding='utf-8') as file:
