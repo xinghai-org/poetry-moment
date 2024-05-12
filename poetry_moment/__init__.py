@@ -1,21 +1,16 @@
 from flask import Blueprint, render_template_string, request, jsonify
 from . import core
 import xhlog as log
+from .docs import docs
 
 # 定义蓝图
 blueprint = Blueprint('poetry_moment', __name__, url_prefix='/poetry-moment')
-
-# 插件的文档内容
-blueprint.docs = """
-<h2>诗歌时刻</h2>
-<p>让诗意，流露此刻。诗歌时刻是一款开源的API软件。他能帮助开发者简单快速的在网站/应用中嵌入诗歌。</p>
-"""
 
 main = blueprint
 
 @main.route('/')
 def index():
-    return "欢迎使用诗歌时刻！"
+    return render_template_string(docs())
 
 @main.route('/get/<poetry_type>')
 def get_poetry(poetry_type):
