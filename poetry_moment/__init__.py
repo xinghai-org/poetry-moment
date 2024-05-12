@@ -22,6 +22,24 @@ def get_poetry(poetry_type):
         log.info(f"请求IP: {request.remote_addr} 请求内容: JSON")
         response_data = core.get()
         return jsonify(response_data), 200
+    if poetry_type=='card':
+        log.info(f"请求IP: {request.remote_addr} 请求内容: 诗词卡片")
+        content = core.get()
+        card = f"""
+<body>
+{content.get('content', 0)}
+<br>
+————{content.get('from', 0)}
+</body>
+"""+"""
+<style>
+body {
+    background-image: url(https://bing.shangzhenyang.com/api/1080p);
+    background-size: cover;
+}
+</style>
+"""
+        return render_template_string(card), 200
     return "请求类型错误", 404
 
 @main.route('/post')
