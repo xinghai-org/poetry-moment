@@ -2,6 +2,7 @@ from flask import Blueprint, render_template_string, request, jsonify
 from . import core
 import xhlog as log
 from .docs import docs
+from .install import install
 from apicat import config
 
 # 定义蓝图
